@@ -1,10 +1,14 @@
 import chex
-from evox import (
-    State as EvoXState,
-    Algorithm,
-    has_init_ask,
-    has_init_tell,
-)
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from evox import (
+        State as EvoXState,
+        Algorithm,
+    )
+else:
+    EvoXState = Any
+    Algorithm = Any
 
 from evorl.types import PyTreeData, pytree_field, PyTreeDict
 from evorl.utils.ec_utils import ParamVectorSpec
@@ -26,6 +30,8 @@ class EvoXAlgorithmAdapter(EvoOptimizer):
     def init(self, key: chex.PRNGKey) -> EvoXAlgoState:
         algo_state = self.algorithm.init(key)
 
+        from evox import has_init_tell, has_init_ask
+
         if has_init_tell(self.algorithm):
             assert has_init_ask(self.algorithm)
             init_step = True
@@ -35,6 +41,8 @@ class EvoXAlgorithmAdapter(EvoOptimizer):
         return EvoXAlgoState(algo_state=algo_state, init_step=init_step)
 
     def ask(self, state: EvoXAlgoState) -> tuple[chex.ArrayTree, EvoXAlgoState]:
+        from evox import has_init_ask
+
         if has_init_ask(self.algorithm) and state.init_step:
             ask = self.algorithm.init_ask
         else:
@@ -49,6 +57,8 @@ class EvoXAlgorithmAdapter(EvoOptimizer):
     def tell(
         self, state: EvoXAlgoState, fitnesses: chex.Array
     ) -> tuple[PyTreeDict, EvoXAlgoState]:
+        from evox import has_init_tell
+
         if has_init_tell(self.algorithm) and state.init_step:
             tell = self.algorithm.init_tell
         else:

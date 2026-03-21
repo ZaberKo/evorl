@@ -6,15 +6,12 @@ from typing_extensions import Self  # pytype: disable=not-supported-yet]
 import jax
 import jax.numpy as jnp
 
-from evox.algorithms import NSGA2
-from evox.operators import non_dominated_sort
-
 from evorl.types import State, Params
 from evorl.envs import AutoresetMode, create_env
 from evorl.evaluators import BraxEvaluator
 from evorl.agent import AgentState
+from evorl.ec.optimizers.ec_optimizer import ECState
 from evorl.distributed import unpmap
-from evorl.ec.optimizers.evox_wrapper import EvoXAlgorithmAdapter, ECState
 from evorl.utils.ec_utils import ParamVectorSpec
 from evorl.recorders import get_1d_array_statistics
 from evorl.workflows import MultiObjectiveECWorkflowTemplate
@@ -63,6 +60,9 @@ class NSGA2Workflow(MultiObjectiveECWorkflowTemplate):
         agent_key = jax.random.PRNGKey(config.seed)
         agent_state = agent.init(env.obs_space, env.action_space, agent_key)
         param_vec_spec = ParamVectorSpec(agent_state.params.policy_params)
+
+        from evorl.ec.optimizers.evox_wrapper import EvoXAlgorithmAdapter
+        from evox.algorithms import NSGA2
 
         ec_optimizer = EvoXAlgorithmAdapter(
             algorithm=NSGA2(
@@ -154,6 +154,7 @@ class NSGA2Workflow(MultiObjectiveECWorkflowTemplate):
 
             cpu_device = jax.devices("cpu")[0]
             with jax.default_device(cpu_device):
+                from evox.operators import non_dominated_sort
                 objectives = jax.device_put(train_metrics.objectives, cpu_device)
                 pf_rank = non_dominated_sort(-objectives, "scan")
                 pf_objectives = train_metrics.objectives[pf_rank == 0]

@@ -57,7 +57,7 @@ dependencies = [
     "chex",
     "distrax",
     "tfp-nightly[jax]",
-    "evox<1.0.0",
+    # "evox<1.0.0",
     "gymnasium>=1.1.0",
     "hydra-core",
     "hydra-joblib-launcher",

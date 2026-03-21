@@ -6,7 +6,7 @@ if importlib.util.find_spec("evox") is not None:
     from .openes import OpenES
     from .cso import CSO
 
-    __all__ = __all__.extend(
+    __all__.extend(
         [
             "CMAES",
             "SepCMAES",
