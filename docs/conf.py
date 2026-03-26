@@ -107,4 +107,4 @@ html_theme_options = {
     "dark_logo": "evox_logo_dark.svg",
 }
 
-html_favicon = "_static/favicon-32x32.ico"
+html_favicon = "_static/favicon.png"
