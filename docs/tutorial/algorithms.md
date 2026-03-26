@@ -24,6 +24,7 @@ Supported RL Algorithms:
 | DDPG      | [`DDPGWorkflow`](#evorl.algorithms.ddpg.DDPGWorkflow)                       | Deterministic | Continuous             |
 | TD3       | [`TD3Workflow`](#evorl.algorithms.td3.TD3Workflow)                          | Deterministic | Continuous             |
 | SAC       | [`SACWorkflow`](#evorl.algorithms.sac.SACWorkflow)                          | Stochastic    | Discrete & Continuous  |
+| TD7       | [`TD7Workflow`](#evorl.algorithms.td7.TD7Workflow)                          | Deterministic | Continuous             |
 
 ## EC Algorithms
 
