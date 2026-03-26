@@ -12,8 +12,11 @@ def create_env(env_cfg, **kwargs) -> Env:
     """Unified env creator.
 
     Args:
-        env_name: environment name
-        env_type: env package name, eg: 'brax'
+        env_cfg: The environment configuration.
+        **kwargs: Additional keyword arguments for the environment creator.
+
+    Returns:
+        The created environment.
     """
     env_type = env_cfg.env_type
     env_name = env_cfg.env_name
